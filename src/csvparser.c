@@ -180,7 +180,9 @@ CsvRow *_CsvParser_getRow(CsvParser *csvParser) {
             seriesOfQuotesLength = 0;
         }
         if (isEndOfFile || ((currChar == csvParser->delimiter_ || currChar == '\n') && ! inside_complex_field) ){
-            currField[lastCharIsQuote ? currFieldCharIter - 1 : currFieldCharIter] = '\0';
+			int endIdx = lastCharIsQuote ? currFieldCharIter - 1 : currFieldCharIter;
+			if (endIdx < 0) endIdx = 0;
+			currField[endIdx] = '\0';
             csvRow->fields_[fieldIter] = (char*)malloc(currFieldCharIter + 1);
             strcpy(csvRow->fields_[fieldIter], currField);
             free(currField);
